@@ -14,9 +14,6 @@ class InventoryPage(BasePage):
         self.remove = self.page.locator("#remove-sauce-labs-backpack")
         self.cart_badge = self.page.locator(".shopping_cart_badge")
 
-    # def validate_url(self, path):
-    #     super().validate_url(path)
-
     def validate_presence_of_product(self):
         expect(self.backpack).to_be_visible()
 
