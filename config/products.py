@@ -1,0 +1,1 @@
+SAUCE_LABS_BACKPACK_TEXT = "Sauce Labs Backpack"
