@@ -20,3 +20,8 @@ NO_MATCHES_ERROR = ("Epic sadface: Username and password do not match any"
                         " user in this service")
 USERNAME_EMPTY_ERROR = "Epic sadface: Username is required"
 PASSWORD_EMPTY_ERROR = "Epic sadface: Password is required"
+
+
+FIRSTNAME = "Joe"
+LASTNAME = "Tomson"
+POSTAL_CODE = '1234'
