@@ -35,3 +35,6 @@ class InventoryPage(BasePage):
     def click_to_card_badge_btn(self):
         self.cart_badge.click()
 
+    def reload_page(self):
+        self.page.reload()
+
