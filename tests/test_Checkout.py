@@ -1,7 +1,7 @@
 from config.base import BASE_ROOT, INVENTORY_ENDPOINT, BASE_URL, \
     CARD_BADGE_ENDPOINT, CHECKOUT_ENDPOINT, OVERVIEW_ENDPOINT, \
     COMPLETE_ENDPOINT
-from config.products import SAUCE_LABS_BACKPACK_TEXT, SHIPPING_INFO_TEXT, \
+from config.products import SAUCE_LABS_BACKPACK, SHIPPING_INFO_TEXT, \
     TAX_AMOUNT, TITLE_TEXT, HEADER_TEXT, COMPLETE_TEXT
 from config.users import STANDARD_USER, PASSWORD, FIRSTNAME, LASTNAME, \
     POSTAL_CODE
@@ -57,7 +57,7 @@ def test_tc_check_001(page):
     overview_page = OverviewPage(page)
     overview_page.validate_url(BASE_ROOT + OVERVIEW_ENDPOINT)
     overview_page.validate_item_quantity("1")
-    overview_page.validate_item_name(SAUCE_LABS_BACKPACK_TEXT)
+    overview_page.validate_item_name(SAUCE_LABS_BACKPACK)
     overview_page.validate_item_price(price_text)
     overview_page.validate_shipping_info_text(SHIPPING_INFO_TEXT)
     overview_page.validate_total_price(price_text)
