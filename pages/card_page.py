@@ -1,6 +1,6 @@
 from playwright.sync_api import expect
 
-from config.products import SAUCE_LABS_BACKPACK_TEXT
+from config.products import SAUCE_LABS_BACKPACK
 from pages.base_page import BasePage
 
 
@@ -16,12 +16,10 @@ class CardPage(BasePage):
         expect(self.item_quantity).to_have_text("1")
 
     def validate_product_name(self):
-        expect(self.backpack).to_contain_text(SAUCE_LABS_BACKPACK_TEXT)
+        expect(self.backpack).to_contain_text(SAUCE_LABS_BACKPACK)
 
     def validate_product_price(self, saved_price):
         assert self.cart_price.inner_text() == saved_price
 
     def click_on_checkout_btn(self):
         self.checkout_btn.click()
-
-
