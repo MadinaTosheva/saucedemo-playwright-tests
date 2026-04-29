@@ -25,3 +25,12 @@ PASSWORD_EMPTY_ERROR = "Epic sadface: Password is required"
 FIRSTNAME = "Joe"
 LASTNAME = "Tomson"
 POSTAL_CODE = '1234'
+
+EMPTY_FIRSTNAME = ""
+EMPTY_LASTNAME = ""
+EMPTY_POSTALCODE = ""
+POSTAL_CODE_ALPHA = "abcdefg"
+
+EMPTY_FIRSTNAME_ERROR = "Error: First Name is required"
+EMPTY_LASTNAME_ERROR = "Error: Last Name is required"
+EMPTY_POSTAL_CODE_ERROR = "Error: Postal Code is required"
