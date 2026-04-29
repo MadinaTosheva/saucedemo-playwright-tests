@@ -29,17 +29,20 @@ class InventoryPage(BasePage):
     def get_product_price(self):
         return self.price.inner_text()
 
-    def validate_product_price(self, price_text):
+    def validate_product_price(self, price_text: str):
         assert price_text.startswith("$")
 
-    def add_product_to_cart(self, product_name, click_count = 1):
-        for i in range(len(product_name)):
-            product = self.page.locator(".inventory_item", has_text=product_name[i])
+    def loc_product_item_by_text(self, product_name: str):
+        return self.page.locator(".inventory_item", has_text=product_name)
+
+    def add_product_to_cart(self, product_names: list, click_count = 1):
+
+        for name in product_names:
+            product = self.loc_product_item_by_text(name)
             product.get_by_text("Add to cart").click(click_count=click_count)
 
-    def validate_presence_of_remove_btn_on_product(self, product_name):
-        # expect(self.remove).to_have_text("Remove")
-        product = self.page.locator(".inventory_item", has_text=product_name)
+    def validate_presence_of_remove_btn_on_product(self, product_name: str):
+        product = self.loc_product_item_by_text(product_name)
         expect(product).to_contain_text("Remove")
 
     def remove_product_from_cart_badge(self, product_name):

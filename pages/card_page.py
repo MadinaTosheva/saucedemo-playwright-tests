@@ -13,11 +13,11 @@ class CardPage(BasePage):
         self.checkout_btn = self.page.locator("#checkout")
         self.continue_shopping_btn = self.page.locator("#continue-shopping")
 
-    def validate_item_quantity(self):
-        expect(self.item_quantity).to_have_text("1")
+    def validate_item_quantity(self, value: str = "1"):
+        expect(self.item_quantity).to_have_text(value)
 
-    def validate_product_name(self):
-        expect(self.inventory_item_name).to_contain_text(SAUCE_LABS_BACKPACK)
+    def validate_product_name(self, product_name: str):
+        expect(self.inventory_item_name).to_contain_text(product_name)
 
     def validate_product_price(self, saved_price):
         assert self.cart_price.inner_text() == saved_price
