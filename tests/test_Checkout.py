@@ -32,9 +32,9 @@ def test_tc_check_001(page):
     price_text = inventory_page.get_product_price()
     inventory_page.validate_product_price(price_text)
 
-    inventory_page.click_add_to_cart_btn()
-    inventory_page.validate_presence_of_remove_btn()
-    inventory_page.validate_value_of_cart_badge()
+    inventory_page.add_product_to_cart([SAUCE_LABS_BACKPACK])
+    inventory_page.validate_presence_of_remove_btn_on_product(SAUCE_LABS_BACKPACK)
+    inventory_page.validate_value_of_cart_badge("1")
     inventory_page.click_to_card_badge_btn()
 
     card_page = CardPage(page)
