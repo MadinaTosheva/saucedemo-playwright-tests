@@ -62,7 +62,7 @@ def test_tc_inv_008(auth_page):
 
     inventory_page = InventoryPage(auth_page)
     inventory_page.validate_url(BASE_ROOT + INVENTORY_ENDPOINT)
-    inventory_page.click_add_to_cart_btn()
+    inventory_page.add_product_to_cart([SAUCE_LABS_BACKPACK])
     inventory_page.sort_to_price_increasing()
     inventory_page.validate_presence_of_product()
 
@@ -81,6 +81,6 @@ def test_tc_inv_010(auth_page):
 
     inventory_page = InventoryPage(auth_page)
     inventory_page.validate_url(BASE_ROOT + INVENTORY_ENDPOINT)
-    inventory_page.click_add_to_cart_btn()
-    inventory_page.validate_presence_of_remove_btn()
-    inventory_page.validate_value_of_cart_badge()
+    inventory_page.add_product_to_cart([SAUCE_LABS_BACKPACK])
+    inventory_page.validate_presence_of_remove_btn_on_product(SAUCE_LABS_BACKPACK)
+    inventory_page.validate_value_of_cart_badge("1")

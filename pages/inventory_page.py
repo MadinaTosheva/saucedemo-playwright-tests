@@ -10,15 +10,18 @@ class InventoryPage(BasePage):
         super().__init__(page)
         self.backpack = self.page.get_by_text(SAUCE_LABS_BACKPACK)
         self.price = self.page.locator("(//div[@class='pricebar'])[1]/div[@class='inventory_item_price']")
-        self.add_to_cart = self.page.locator("#add-to-cart-sauce-labs-backpack")
+        self.add_backpack_to_cart = self.page.locator("#add-to-cart-sauce-labs-backpack")
         self.remove = self.page.locator("#remove-sauce-labs-backpack")
         self.cart_badge = self.page.locator(".shopping_cart_badge")
+        self.cart_link = self.page.locator(".shopping_cart_link")
         self.inventory_items = self.page.locator('.inventory_item')
         self.inventory_list = self.page.locator(".inventory_list")
         self.inventory_item_name = self.page.locator(".inventory_item_name ")
         self.inventory_item_price = self.page.locator(".inventory_item_price")
         self.inventory_images = self.page.locator(".inventory_item_img a img")
         self.sort_container = self.page.locator(".product_sort_container")
+        self.menu_btn = self.page.locator("#react-burger-menu-btn")
+        self.logout_btn = self.page.locator("#logout_sidebar_link")
 
     def validate_presence_of_product(self):
         expect(self.backpack).to_be_visible()
@@ -26,17 +29,34 @@ class InventoryPage(BasePage):
     def get_product_price(self):
         return self.price.inner_text()
 
-    def validate_product_price(self, price_text):
+    def validate_product_price(self, price_text: str):
         assert price_text.startswith("$")
 
-    def click_add_to_cart_btn(self):
-        self.add_to_cart.click()
+    def loc_product_item_by_text(self, product_name: str):
+        return self.page.locator(".inventory_item", has_text=product_name)
 
-    def validate_presence_of_remove_btn(self):
-        expect(self.remove).to_have_text("Remove")
+    def add_product_to_cart(self, product_names: list, click_count = 1):
 
-    def validate_value_of_cart_badge(self):
-        expect(self.cart_badge).to_have_text("1")
+        for name in product_names:
+            product = self.loc_product_item_by_text(name)
+            product.get_by_text("Add to cart").click(click_count=click_count)
+
+    def validate_presence_of_remove_btn_on_product(self, product_name: str):
+        product = self.loc_product_item_by_text(product_name)
+        expect(product).to_contain_text("Remove")
+
+    def remove_product_from_cart_badge(self, product_name):
+        product = self.page.locator(".inventory_item", has_text=product_name)
+        product.get_by_text("Remove").click()
+
+    def validate_value_of_cart_badge(self, num):
+        expect(self.cart_badge).to_have_text(num)
+
+    def validate_cart_badge_is_empty(self):
+        expect(self.cart_badge).to_have_count(0)
+
+    def click_to_card_link_btn(self):
+        self.cart_link.click()
 
     def click_to_card_badge_btn(self):
         self.cart_badge.click()
@@ -98,6 +118,12 @@ class InventoryPage(BasePage):
 
     def click_on_image(self):
         self.inventory_images.nth(0).click()
+
+    def click_on_menu_btn(self):
+        self.menu_btn.click()
+
+    def click_on_logout_btn(self):
+        self.logout_btn.click()
 
 
 
