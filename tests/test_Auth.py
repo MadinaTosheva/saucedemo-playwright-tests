@@ -25,7 +25,7 @@ def test_negative_login(page, username, password, error_text):
     base_page.validate_url(BASE_URL)
 
     login_page = LoginPage(page)
-    login_page.login_procedure(username, password)
+    login_page.login_process(username, password)
     login_page.error_check(error_text)
 
 def test_tc_auth_001(page):
@@ -34,7 +34,7 @@ def test_tc_auth_001(page):
     base_page.validate_url(BASE_URL)
 
     login_page = LoginPage(page)
-    login_page.login_procedure(STANDARD_USER, PASSWORD)
+    login_page.login_process(STANDARD_USER, PASSWORD)
 
     inventory_page = InventoryPage(page)
     inventory_page.validate_url(BASE_ROOT + INVENTORY_ENDPOINT)
@@ -47,11 +47,11 @@ def test_tc_auth_009(page):
 
     for i in range(5):
         login_page = LoginPage(page)
-        login_page.login_procedure(LOCKED_OUT_USER, PASSWORD)
+        login_page.login_process(LOCKED_OUT_USER, PASSWORD)
 
     # шестая попытка успешная (без блокировки страницы)
     login_page = LoginPage(page)
-    login_page.login_procedure(STANDARD_USER, PASSWORD)
+    login_page.login_process(STANDARD_USER, PASSWORD)
 
     inventory_page = InventoryPage(page)
     inventory_page.validate_url(BASE_ROOT + INVENTORY_ENDPOINT)
@@ -62,7 +62,7 @@ def test_tc_auth_010(page):
     base_page.validate_url(BASE_URL)
 
     login_page = LoginPage(page)
-    login_page.login_procedure(STANDARD_USER, PASSWORD)
+    login_page.login_process(STANDARD_USER, PASSWORD)
 
     inventory_page = InventoryPage(page)
     inventory_page.validate_url(BASE_ROOT + INVENTORY_ENDPOINT)

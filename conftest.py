@@ -15,7 +15,7 @@ def create_auth():
 
         login_page = LoginPage(page)
         login_page.open_page(BASE_URL)
-        login_page.login_procedure(STANDARD_USER, PASSWORD)
+        login_page.login_process(STANDARD_USER, PASSWORD)
         login_page.validate_url(BASE_ROOT + INVENTORY_ENDPOINT)
 
         context.storage_state(path="auth.json")

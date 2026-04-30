@@ -32,7 +32,7 @@ class LoginPage(BasePage):
     def validate_error_text(self, error_text):
         expect(self.error).to_have_text(error_text)
 
-    def login_procedure(self, username_, password_):
+    def login_process(self, username_, password_):
         self.enter_username(username_)
         self.enter_password(password_)
         self.click_login_btn()

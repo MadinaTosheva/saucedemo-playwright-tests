@@ -95,5 +95,5 @@ def test_tc_cart_010(auth_page):
     inventory_page.click_on_logout_btn()
 
     login_page = LoginPage(auth_page)
-    login_page.login_procedure(ERROR_USER, PASSWORD)
+    login_page.login_process(ERROR_USER, PASSWORD)
     inventory_page.validate_cart_badge_is_empty()  ## тут уже баг страницы. При авторизации с другого юзера, в корзине сохранена кеш предыдущего юзера
