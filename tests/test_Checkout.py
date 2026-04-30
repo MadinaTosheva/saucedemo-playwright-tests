@@ -1,76 +1,124 @@
-from config.base import BASE_ROOT, INVENTORY_ENDPOINT, BASE_URL, \
-    CARD_BADGE_ENDPOINT, CHECKOUT_ENDPOINT, OVERVIEW_ENDPOINT, \
-    COMPLETE_ENDPOINT
-from config.products import SAUCE_LABS_BACKPACK, SHIPPING_INFO_TEXT, \
-    TAX_AMOUNT, TITLE_TEXT, HEADER_TEXT, COMPLETE_TEXT
-from config.users import STANDARD_USER, PASSWORD, FIRSTNAME, LASTNAME, \
-    POSTAL_CODE
-from pages.base_page import BasePage
+import allure
+import pytest
+
+from config.base import BASE_ROOT, CHECKOUT_ENDPOINT, BASE_URL, \
+    OVERVIEW_ENDPOINT, INVENTORY_ENDPOINT, CARD_BADGE_ENDPOINT
+from config.products import SAUCE_LABS_BACKPACK, SAUCE_LABS_BIKE_LIGHT
+from config.users import EMPTY_FIRSTNAME, LASTNAME, POSTAL_CODE, \
+    EMPTY_FIRSTNAME_ERROR, FIRSTNAME, EMPTY_LASTNAME, EMPTY_LASTNAME_ERROR, \
+    EMPTY_POSTALCODE, EMPTY_POSTAL_CODE_ERROR, POSTAL_CODE_ALPHA
 from pages.card_page import CardPage
 from pages.checkout_page import CheckoutPage
-from pages.complete_page import CompletePage
 from pages.inventory_page import InventoryPage
-from pages.login_page import LoginPage
 from pages.overview_page import OverviewPage
 
 
-def test_tc_check_001(page):
-    base_page = BasePage(page)
-    base_page.open_page(BASE_URL)
-    base_page.validate_url(BASE_URL)
+@allure.epic("Saucedemo")
+@allure.feature("Checkout")
+class TestCheckout:
 
-    login_page = LoginPage(page)
-    login_page.enter_username(STANDARD_USER)
-    login_page.validate_username(STANDARD_USER)
-    login_page.enter_password(PASSWORD)
-    login_page.validate_password(PASSWORD)
-    login_page.click_login_btn()
+    @allure.story("Checkout form validation")
+    @allure.title("Checkout with different credentials where we get validation errors: '{firstname}' '{lastname}' '{postalcode}'")
+    @allure.severity(allure.severity_level.NORMAL)
+    @pytest.mark.parametrize("firstname, lastname, postalcode, error_text", [
+        (EMPTY_FIRSTNAME, LASTNAME, POSTAL_CODE, EMPTY_FIRSTNAME_ERROR),
+        (FIRSTNAME, EMPTY_LASTNAME, POSTAL_CODE, EMPTY_LASTNAME_ERROR),
+        (FIRSTNAME, LASTNAME, EMPTY_POSTALCODE, EMPTY_POSTAL_CODE_ERROR)])
+    def test_tc_check_002_003_004(self, auth_page, firstname, lastname, postalcode, error_text):
+        auth_page.goto(BASE_ROOT + CHECKOUT_ENDPOINT)
 
-    inventory_page = InventoryPage(page)
-    inventory_page.validate_url(BASE_ROOT + INVENTORY_ENDPOINT)
-    inventory_page.validate_presence_of_product()
-    price_text = inventory_page.get_product_price()
-    inventory_page.validate_product_price(price_text)
+        checkout_page = CheckoutPage(auth_page)
+        checkout_page.checkout_process(firstname, lastname, postalcode)
+        checkout_page.error_check(error_text)
 
-    inventory_page.add_product_to_cart([SAUCE_LABS_BACKPACK])
-    inventory_page.validate_presence_of_remove_btn_on_product(SAUCE_LABS_BACKPACK)
-    inventory_page.validate_value_of_cart_badge("1")
-    inventory_page.click_to_card_badge_btn()
+    @allure.story("Checkout form validation")
+    @allure.title("Checkout with alphanumeric postal code")
+    @allure.severity(allure.severity_level.NORMAL)
+    def test_tc_check_005(self, auth_page):
+        auth_page.goto(BASE_ROOT + CHECKOUT_ENDPOINT)
 
-    card_page = CardPage(page)
-    card_page.validate_url(BASE_ROOT + CARD_BADGE_ENDPOINT)
-    card_page.validate_item_quantity()
-    card_page.validate_product_name()
-    card_page.validate_product_price(price_text)
-    card_page.click_on_checkout_btn()
+        checkout_page = CheckoutPage(auth_page)
+        checkout_page.checkout_process(FIRSTNAME, LASTNAME, POSTAL_CODE_ALPHA)
 
-    checkout_page = CheckoutPage(page)
-    checkout_page.validate_url(BASE_ROOT + CHECKOUT_ENDPOINT)
-    checkout_page.enter_firstname(FIRSTNAME)
-    checkout_page.validate_firstname(FIRSTNAME)
-    checkout_page.enter_lastname(LASTNAME)
-    checkout_page.validate_lastname(LASTNAME)
-    checkout_page.enter_postalcode(POSTAL_CODE)
-    checkout_page.validate_postalcode(POSTAL_CODE)
-    checkout_page.click_continue_btn()
+        overview_page = OverviewPage(auth_page)
+        overview_page.validate_url(BASE_ROOT + OVERVIEW_ENDPOINT)
 
-    overview_page = OverviewPage(page)
-    overview_page.validate_url(BASE_ROOT + OVERVIEW_ENDPOINT)
-    overview_page.validate_item_quantity("1")
-    overview_page.validate_item_name(SAUCE_LABS_BACKPACK)
-    overview_page.validate_item_price(price_text)
-    overview_page.validate_shipping_info_text(SHIPPING_INFO_TEXT)
-    overview_page.validate_total_price(price_text)
-    overview_page.validate_tax_amount(TAX_AMOUNT)
-    overview_page.validate_total_payment_amount(price_text, TAX_AMOUNT)
-    overview_page.click_on_finish_btn()
+    @allure.story("Checkout navigation")
+    @allure.title("Cancel checkout returns to cart")
+    @allure.severity(allure.severity_level.NORMAL)
+    def test_tc_check_006(self, auth_page):
+        auth_page.goto(BASE_ROOT + CHECKOUT_ENDPOINT)
 
-    complete_page = CompletePage(page)
-    complete_page.validate_url(BASE_ROOT + COMPLETE_ENDPOINT)
-    complete_page.validate_title(TITLE_TEXT)
-    complete_page.validate_header_text(HEADER_TEXT)
-    complete_page.validate_complete_text(COMPLETE_TEXT)
-    complete_page.button_enabled()
-    complete_page.click_on_back_home_btn()
+        checkout_page = CheckoutPage(auth_page)
+        checkout_page.click_cancel_btn()
 
-    inventory_page.validate_url(BASE_ROOT + INVENTORY_ENDPOINT)
+        card_page = CardPage(auth_page)
+        card_page.validate_url(BASE_ROOT + CARD_BADGE_ENDPOINT)
+
+    @allure.story("Checkout navigation")
+    @allure.title("Cancel checkout then continue shopping returns to inventory")
+    @allure.severity(allure.severity_level.NORMAL)
+    def test_tc_check_007(self, auth_page):
+        auth_page.goto(BASE_ROOT + CHECKOUT_ENDPOINT)
+
+        checkout_page = CheckoutPage(auth_page)
+        checkout_page.click_cancel_btn()
+
+        card_page = CardPage(auth_page)
+        card_page.click_on_continue_shopping()
+
+        inventory_page = InventoryPage(auth_page)
+        inventory_page.validate_url(BASE_ROOT + INVENTORY_ENDPOINT)
+
+    @allure.story("Order total calculation")
+    @allure.title("Validate total payment amount - single item")
+    @allure.severity(allure.severity_level.CRITICAL)
+    def test_tc_check_008(self, auth_page):
+        auth_page.goto(BASE_ROOT + INVENTORY_ENDPOINT)
+
+        inventory_page = InventoryPage(auth_page)
+        inventory_page.add_product_to_cart([SAUCE_LABS_BACKPACK])
+        inventory_page.click_to_card_badge_btn()
+
+        card_page = CardPage(auth_page)
+        card_page.click_on_checkout_btn()
+
+        checkout_page = CheckoutPage(auth_page)
+        checkout_page.checkout_process(FIRSTNAME, LASTNAME, POSTAL_CODE)
+
+        overview_page = OverviewPage(auth_page)
+        overview_page.validate_url(BASE_ROOT + OVERVIEW_ENDPOINT)
+        item_price = overview_page.get_item_total()
+        item_tax = overview_page.get_tax()
+        overview_page.validate_total_payment_amount(item_price, item_tax)
+
+    def test_tc_check_009(self, auth_page):
+        pass
+    # использовала округление суммы в методе validate_total_payment_amount()
+    # где получаем округлённый тотал эмаунт
+
+    @allure.story("Order total calculation")
+    @allure.title("Validate total payment amount - multiple items")
+    @allure.severity(allure.severity_level.CRITICAL)
+    def test_tc_check_010(self, auth_page):
+        auth_page.goto(BASE_ROOT + INVENTORY_ENDPOINT)
+
+        inventory_page = InventoryPage(auth_page)
+        inventory_page.add_product_to_cart([SAUCE_LABS_BACKPACK, SAUCE_LABS_BIKE_LIGHT])
+        inventory_page.click_to_card_badge_btn()
+
+        card_page = CardPage(auth_page)
+        card_page.click_on_checkout_btn()
+
+        checkout_page = CheckoutPage(auth_page)
+        checkout_page.checkout_process(FIRSTNAME, LASTNAME, POSTAL_CODE)
+
+        overview_page = OverviewPage(auth_page)
+        overview_page.validate_url(BASE_ROOT + OVERVIEW_ENDPOINT)
+        item_price = overview_page.get_item_total()
+        item_tax = overview_page.get_tax()
+        overview_page.validate_total_payment_amount(item_price, item_tax)
+
+
+
+
