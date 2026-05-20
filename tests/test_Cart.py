@@ -35,7 +35,8 @@ class TestCart:
 
         inventory_page = InventoryPage(auth_page)
         inventory_page.validate_url(BASE_ROOT + INVENTORY_ENDPOINT)
-        inventory_page.add_product_to_cart([SAUCE_LABS_BACKPACK, SAUCE_LABS_BIKE_LIGHT, SAUCE_LABS_BOLT_TSHIRT])
+        inventory_page.add_product_to_cart([SAUCE_LABS_BACKPACK,
+                                            SAUCE_LABS_BIKE_LIGHT, SAUCE_LABS_BOLT_TSHIRT])
         inventory_page.validate_value_of_cart_badge("3")
 
     @allure.story("Add product to cart")

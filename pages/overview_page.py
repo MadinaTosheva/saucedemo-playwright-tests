@@ -65,7 +65,3 @@ class OverviewPage(BasePage):
     @allure.step("Click on finish button")
     def click_on_finish_btn(self):
         self.finish_btn.click()
-
-
-
-

@@ -56,7 +56,7 @@ class TestAuth:
         base_page.open_page(BASE_URL)
         base_page.validate_url(BASE_URL)
 
-        for i in range(5):
+        for _ in range(5):
             login_page = LoginPage(page)
             login_page.login_process(LOCKED_OUT_USER, PASSWORD)
 

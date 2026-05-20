@@ -10,8 +10,10 @@ class InventoryPage(BasePage):
     def __init__(self, page):
         super().__init__(page)
         self.backpack = self.page.get_by_text(SAUCE_LABS_BACKPACK)
-        self.price = self.page.locator("(//div[@class='pricebar'])[1]/div[@class='inventory_item_price']")
-        self.add_backpack_to_cart = self.page.locator("#add-to-cart-sauce-labs-backpack")
+        self.price = self.page.locator("(//div[@class='pricebar'])[1]"
+                                       "/div[@class='inventory_item_price']")
+        self.add_backpack_to_cart = self.page.locator(
+            "#add-to-cart-sauce-labs-backpack")
         self.remove = self.page.locator("#remove-sauce-labs-backpack")
         self.cart_badge = self.page.locator(".shopping_cart_badge")
         self.cart_link = self.page.locator(".shopping_cart_link")
@@ -142,6 +144,3 @@ class InventoryPage(BasePage):
     @allure.step("Click on logout button")
     def click_on_logout_btn(self):
         self.logout_btn.click()
-
-
-

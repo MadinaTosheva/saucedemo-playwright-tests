@@ -1,7 +1,6 @@
 import allure
 from playwright.sync_api import expect
 
-from config.products import SAUCE_LABS_BACKPACK
 from pages.base_page import BasePage
 
 

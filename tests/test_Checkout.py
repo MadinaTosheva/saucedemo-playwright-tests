@@ -18,7 +18,8 @@ from pages.overview_page import OverviewPage
 class TestCheckout:
 
     @allure.story("Checkout form validation")
-    @allure.title("Checkout with different credentials where we get validation errors: '{firstname}' '{lastname}' '{postalcode}'")
+    @allure.title("Checkout with different credentials where we get validation"
+                  " errors: '{firstname}' '{lastname}' '{postalcode}'")
     @allure.severity(allure.severity_level.NORMAL)
     @pytest.mark.parametrize("firstname, lastname, postalcode, error_text", [
         (EMPTY_FIRSTNAME, LASTNAME, POSTAL_CODE, EMPTY_FIRSTNAME_ERROR),
@@ -118,7 +119,3 @@ class TestCheckout:
         item_price = overview_page.get_item_total()
         item_tax = overview_page.get_tax()
         overview_page.validate_total_payment_amount(item_price, item_tax)
-
-
-
-

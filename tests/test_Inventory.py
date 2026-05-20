@@ -1,7 +1,7 @@
 import allure
 
 from config.base import BASE_ROOT, INVENTORY_ENDPOINT, DETAILED_ITEM_ENDPOINT
-from config.products import *
+from config.products import ITEMS_LIST, ITEMS_PRICES, SAUCE_LABS_BACKPACK
 from pages.detail_page import DetailPage
 from pages.inventory_page import InventoryPage
 

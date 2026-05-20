@@ -1,7 +1,6 @@
 import allure
 from playwright.sync_api import expect
 
-from pages.base_page import BasePage
 from pages.login_page import LoginPage
 
 
@@ -46,11 +45,10 @@ class CheckoutPage(LoginPage):
     def click_cancel_btn(self):
         self.cancel.click()
 
-    @allure.step("Make checkout process with (firstname: '{firstname_}, lastname: '{lastname_}', postalcode: '{postalcode_}')")
+    @allure.step("Make checkout process with (firstname: '{firstname_}, "
+                 "lastname: '{lastname_}', postalcode: '{postalcode_}')")
     def checkout_process(self, firstname_, lastname_, postalcode_):
         self.enter_firstname(firstname_)
         self.enter_lastname(lastname_)
         self.enter_postalcode(postalcode_)
         self.click_continue_btn()
-
-

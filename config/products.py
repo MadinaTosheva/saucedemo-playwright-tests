@@ -19,4 +19,5 @@ ITEMS_PRICES = {
 SHIPPING_INFO_TEXT = "Free Pony Express Delivery!"
 TITLE_TEXT = "Checkout: Complete!"
 HEADER_TEXT = "Thank you for your order!"
-COMPLETE_TEXT = "Your order has been dispatched, and will arrive just as fast as the pony can get there!"
+COMPLETE_TEXT = ("Your order has been dispatched, and will arrive just as fast"
+                 "as the pony can get there!")
