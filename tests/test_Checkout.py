@@ -1,7 +1,7 @@
 import allure
 import pytest
 
-from config.base import BASE_ROOT, CHECKOUT_ENDPOINT, BASE_URL, \
+from config.base import BASE_ROOT, CHECKOUT_ENDPOINT, \
     OVERVIEW_ENDPOINT, INVENTORY_ENDPOINT, CARD_BADGE_ENDPOINT
 from config.products import SAUCE_LABS_BACKPACK, SAUCE_LABS_BIKE_LIGHT
 from config.users import EMPTY_FIRSTNAME, LASTNAME, POSTAL_CODE, \
